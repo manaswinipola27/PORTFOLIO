@@ -106,7 +106,7 @@ const Hero = () => {
 
                         <div className="relative w-full h-full rounded-full p-1.5 border-2 border-[#00ff00]/20 group-hover:border-[#00ff00] transition-colors duration-500 overflow-hidden shadow-[0_0_50px_rgba(0,255,0,0.15)]">
                             <img
-                                src="/me.jpg"
+                                src={`${import.meta.env.BASE_URL}me.jpg`}
                                 alt="Manaswini Pola"
                                 className="w-full h-full object-cover rounded-full brightness-110 saturate-[1.1]"
                             />
