@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #00ff00;
+    --secondary: #008000;
+    --bg-dark: #050810;
+    --bg-card: #0f1424;
+    --text-main: #b8c1ec;
+    --white: #ffffff;
+  }
+
+  body {
+    @apply bg-[#050810] text-[#b8c1ec] selection:bg-[#00ff00] selection:text-[#050810];
+    font-family: 'Space Grotesk', sans-serif;
+    scroll-behavior: smooth;
+  }
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2 border border-[#00ff00] text-[#00ff00] rounded-md hover:bg-[#00ff00]/10 transition-all duration-300 backdrop-blur-sm shadow-[0_0_10px_rgba(0, 255, 0, 0.1)] hover:shadow-[0_0_20px_rgba(0, 255, 0, 0.3)] hover:-translate-y-0.5;
+  }
+}
+
+.glass-card {
+  @apply bg-[#0f1424]/60 backdrop-blur-md border border-white/5 rounded-xl transition-all duration-500;
+}
+
+.glass-card:hover {
+  @apply border-[#00ff00]/30 shadow-[0_20px_40px_-20px_rgba(0, 0, 0, 0.5)];
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#050810];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#00ff00] rounded-full;
+}

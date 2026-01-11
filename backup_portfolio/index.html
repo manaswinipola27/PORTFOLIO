@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manaswini Pola | Full Stack Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --primary: #00fff2; /* Brighter Neon Cyan */
+            --secondary: #ff00a2; /* Neon Pink */
+            --bg-dark: #050810; /* Ultra Dark Background */
+            --bg-card: #0f1424; 
+            --text-main: #b8c1ec; 
+            --white: #ffffff;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-heading); scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            overflow-x: hidden;
+        }
+
+        /* The Shining Background Canvas */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* Send to back */
+            opacity: 0.6;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 2. UTILITY CLASSES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+        .section { padding: 120px 0; }
+        
+        /* Highlight text with a subtle glow */
+        .highlight { color: var(--primary); text-shadow: 0 0 15px rgba(0, 255, 242, 0.4); }
+        
+        /* Neon Button */
+        .btn {
+            padding: 14px 36px;
+            background: rgba(0, 255, 242, 0.05);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: var(--font-code);
+            font-weight: bold;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 242, 0.1);
+        }
+        
+        .btn:hover { 
+            background: rgba(0, 255, 242, 0.15);
+            box-shadow: 0 0 30px rgba(0, 255, 242, 0.5); 
+            transform: translateY(-3px) scale(1.02);
+            text-shadow: 0 0 8px rgba(0, 255, 242, 0.8); 
+        }
+
+        /* Animation classes */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 3. HEADER --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 8, 16, 0.85); /* Darker, more transparent glass */
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--white); letter-spacing: -1px; }
+        .logo span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        nav ul { display: flex; gap: 40px; }
+        nav a { font-size: 0.95rem; font-family: var(--font-code); color: var(--white); opacity: 0.8; }
+        nav a:hover { color: var(--primary); opacity: 1; text-shadow: 0 0 15px rgba(0,255,242,0.6); }
+
+        /* --- 4. HERO SECTION (Redesigned with Photo) --- */
+        .hero { 
+            min-height: 100vh; 
+            padding-top: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Separate text and image */
+        }
+
+        .hero-content { flex: 1.5; }
+        .hero-image-container { flex: 1; display: flex; justify-content: flex-end; }
+        
+        .hero h4 { color: var(--primary); font-family: var(--font-code); margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 2px; }
+        
+        /* FLOATING NAME ANIMATION */
+        @keyframes floatName {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .floating-name { 
+            font-size: 5rem; color: var(--white); line-height: 1.1; margin-bottom: 15px; font-weight: 800; 
+            display: inline-block;
+            animation: floatName 4s ease-in-out infinite;
+            text-shadow: 3px 3px 0px rgba(0, 255, 242, 0.15);
+        }
+        
+        .hero h2 { font-size: 3.8rem; color: #8892b0; margin-bottom: 30px; font-weight: 700; opacity: 0.8; }
+        .hero p { max-width: 550px; font-size: 1.2rem; margin-bottom: 50px; line-height: 1.8; color: var(--text-main); }
+        
+        /* TYPING EFFECT CURSOR */
+        .typing-text { color: var(--white); border-right: 3px solid var(--secondary); padding-right: 5px; animation: blink 0.75s step-end infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+
+        /* PROFILE IMAGE STYLING (The "Ossum" Look) */
+        .profile-img {
+            width: 400px; height: 400px;
+            border-radius: 50%; /* Perfect circle */
+            /* IMPORTANT: Ensure your photo is named profile.png and is in the same folder */
+            background: url('profile.png') no-repeat center center/cover;
+            border: 3px solid var(--primary);
+            /* Massive Neon Glow Effect */
+            box-shadow: 0 0 50px rgba(0, 255, 242, 0.3), inset 0 0 30px rgba(0, 255, 242, 0.2);
+            position: relative;
+            transition: 0.5s;
+        }
+        .profile-img:hover {
+            transform: scale(1.03) rotate(2deg);
+            box-shadow: 0 0 80px rgba(0, 255, 242, 0.6), inset 0 0 30px rgba(0, 255, 242, 0.4);
+            border-color: var(--secondary);
+        }
+
+        /* --- 5. SKILLS --- */
+        .section-title { font-size: 2.2rem; color: var(--white); margin-bottom: 60px; display: flex; align-items: center; font-weight: 700; }
+        .section-title span { color: var(--primary); font-family: var(--font-code); font-size: 1.5rem; margin-right: 20px; font-weight: 400; }
+        .section-title::after { content:""; height: 1px; flex-grow: 1; background: linear-gradient(90deg, var(--primary), transparent); margin-left: 20px; opacity: 0.3; }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .skill-card {
+            background: rgba(15, 20, 36, 0.6); /* Semi-transparent card */
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 242, 0.05);
+            transition: 0.4s;
+        }
+        .skill-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 15px 35px -15px rgba(0, 255, 242, 0.25); }
+        
+        .skill-card h3 { color: var(--white); margin-bottom: 25px; display: flex; align-items: center; gap: 15px; font-size: 1.3rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 12px; }
+        .tag { 
+            background: rgba(0, 255, 242, 0.08); color: var(--primary); 
+            padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-family: var(--font-code);
+            border: 1px solid transparent; transition: 0.3s;
+        }
+        .tag:hover { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,255,242,0.3); background: rgba(0,255,242,0.15); }
+
+        /* --- 6. PROJECTS --- */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
+
+        .project-card {
+            background: rgba(15, 20, 36, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 12px;
+            transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.02);
+            border-top: 3px solid transparent;
+        }
+        .project-card:hover { transform: translateY(-12px); border-top: 3px solid var(--secondary); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6); }
+        
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .folder-icon { font-size: 2.8rem; color: var(--secondary); }
+        .links a { color: var(--white); font-size: 1.4rem; margin-left: 20px; transition: 0.3s; }
+        .links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        .project-card h3 { color: var(--white); font-size: 1.5rem; margin-bottom: 15px; transition: 0.3s;}
+        .project-card:hover h3 { color: var(--secondary); }
+        .project-card p { font-size: 1rem; color: var(--text-main); margin-bottom: 25px; line-height: 1.7; }
+        
+        .tech-list { font-family: var(--font-code); font-size: 0.85rem; color: var(--text-main); display: flex; gap: 18px; opacity: 0.8; }
+
+        /* --- 7. CONTACT & SOCIAL --- */
+        .contact-section { text-align: center; max-width: 600px; margin: 0 auto; padding-bottom: 150px; }
+        
+        .social-sidebar {
+            position: fixed; bottom: 0; left: 50px;
+            display: flex; flex-direction: column; gap: 30px; align-items: center;
+            z-index: 10;
+        }
+        .social-sidebar a { color: var(--text-main); font-size: 1.4rem; transition: 0.3s; }
+        .social-sidebar a:hover { color: var(--primary); transform: translateY(-5px); text-shadow: 0 0 15px var(--primary); }
+        .line { width: 1px; height: 120px; background: var(--text-main); margin-top: 15px; opacity: 0.5; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column-reverse; justify-content: center; text-align: center; padding-top: 120px;}
+            .hero-image-container { justify-content: center; margin-bottom: 50px; }
+            .hero-content { align-items: center; }
+            .hero p { margin: 0 auto 40px auto; }
+            .profile-img { width: 300px; height: 300px; }
+        }
+        @media (max-width: 768px) {
+            .floating-name { font-size: 3.5rem; }
+            .hero h2 { font-size: 2.2rem; }
+            nav, .social-sidebar { display: none; }
+            .container { padding: 0 25px; }
+            header { padding: 20px 25px; }
+            .profile-img { width: 250px; height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <header>
+        <div class="logo">MP<span>.</span></div>
+        <nav>
+            <ul>
+                <li><a href="#about"><span style="color:var(--primary)">01.</span> About</a></li>
+                <li><a href="#skills"><span style="color:var(--primary)">02.</span> Skills</a></li>
+                <li><a href="#projects"><span style="color:var(--primary)">03.</span> Work</a></li>
+                <li><a href="#contact"><span style="color:var(--primary)">04.</span> Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="social-sidebar reveal">
+        <a href="https://github.com/manaswinipola27" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/manaswini-pola-47a61b282" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:manaswinipola27@gmail.com"><i class="far fa-envelope"></i></a>
+        <div class="line"></div>
+    </div>
+
+    <main class="container">
+        
+        <section class="hero" id="about">
+            <div class="hero-content">
+                <h4 class="reveal">Hi, my name is</h4>
+                <h1 class="floating-name reveal" style="transition-delay: 100ms;">Manaswini Pola.</h1>
+                <h2 class="reveal" style="transition-delay: 200ms;">I build <span class="typing-text"></span></h2>
+                <p class="reveal" style="transition-delay: 300ms;">
+                    I am a Full Stack Developer specializing in building exceptional digital experiences. 
+                    Currently, I’m focused on accessible, human-centered products using 
+                    <span class="highlight">React, Django & AI</span>.
+                </p>
+                <div class="reveal" style="transition-delay: 400ms;">
+                    <a href="#projects" class="btn">Check out my work!</a>
+                </div>
+            </div>
+
+            <div class="hero-image-container reveal" style="transition-delay: 500ms;">
+                <div class="profile-img"></div>
+            </div>
+        </section>
+
+        <section class="section" id="skills">
+            <div class="section-title reveal"><span>01.</span> Technical Skills</div>
+            
+            <div class="skills-container">
+                <div class="skill-card reveal">
+                    <h3><i class="fas fa-code" style="color:var(--primary)"></i> Frontend Development</h3>
+                    <div class="skill-tags">
+                        <span class="tag">React.js</span>
+                        <span class="tag">HTML5</span>
+                        <span class="tag">CSS3 (Flex/Grid)</span>
+                        <span class="tag">JavaScript (ES6+)</span>
+                        <span class="tag">Tailwind CSS</span>
+                    </div>
+                </div>
+                <div class="skill-card reveal" style="transition-delay: 100ms;">
+                    <h3><i class="fas fa-server" style="color:var(--secondary)"></i> Backend Architecture</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Django Framework</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">RESTful APIs</span>
+                    </div>
+                </div>
+                <div class="skill-card reveal" style="transition-delay: 200ms;">
+                    <h3><i class="fas fa-brain" style="color:var(--primary)"></i> AI & Data Science</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">Pandas</span>
+                        <span class="tag">Scikit-Learn</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">SQL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="projects">
+            <div class="section-title reveal"><span>02.</span> Some Things I've Built</div>
+            
+            <div class="project-grid">
+                <div class="project-card reveal">
+                    <div class="card-header">
+                        <i class="far fa-folder folder-icon"></i>
+                        <div class="links">
+                            <a href="https://github.com/manaswinipola27" target="_blank"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                    <h3>AI Tourism Safety System</h3>
+                    <p>An intelligent web app using AI algorithms to analyze destination safety, predicting risks for tourists and suggesting safer travel routes based on real-time data.</p>
+                    <div class="tech-list">
+                        <span>Python</span> <span>AI/ML</span> <span>Django</span>
+                    </div>
+                </div>
+
+                <div class="project-card reveal" style="transition-delay: 100ms;">
+                    <div class="card-header">
+                        <i class="far fa-folder folder-icon"></i>
+                        <div class="links">
+                            <a href="https://github.com/manaswinipola27" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3>Road Accident Severity Analysis</h3>
+                    <p>A data science project leveraging Scikit-Learn models to predict accident severity based on historical data, aiding in better traffic safety measures.</p>
+                    <div class="tech-list">
+                        <span>Python</span> <span>Pandas</span> <span>ML</span>
+                    </div>
+                </div>
+
+                <div class="project-card reveal" style="transition-delay: 200ms;">
+                    <div class="card-header">
+                        <i class="far fa-folder folder-icon"></i>
+                        <div class="links">
+                            <a href="https://github.com/manaswinipola27" target="_blank"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <h3>Smart Python Calculator</h3>
+                    <p>A robust GUI-based calculation tool built with Python (Tkinter). Features a clean, modern UI and handles complex mathematical logic efficiently.</p>
+                    <div class="tech-list">
+                        <span>Python</span> <span>Tkinter</span> <span>Algorithms</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact-section reveal" id="contact">
+            <div style="color: var(--primary); font-family: var(--font-code); margin-bottom: 20px; letter-spacing: 2px;">03. WHAT'S NEXT?</div>
+            <h2 style="font-size: 3.5rem; color: var(--white); margin-bottom: 25px; font-weight: 800;">Get In Touch</h2>
+            <p style="margin-bottom: 40px; color: var(--text-main); max-width: 500px; margin-inline: auto;">
+                I am currently looking for new opportunities as a Full Stack Developer. 
+                Whether you have a question or just want to say hi, my inbox is always open!
+            </p>
+            <a href="mailto:manaswinipola27@gmail.com" class="btn">Say Hello</a>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. SCROLL REVEAL ANIMATION
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // 2. TYPING EFFECT
+        const textElement = document.querySelector(".typing-text");
+        const words = ["Web Applications.", "AI Solutions.", "Intelligent Systems.", "the Future."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) {
+                textElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                setTimeout(type, 2000);
+            } else if (isDeleting && charIndex === 0) {
