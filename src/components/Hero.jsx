@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Terminal } from 'lucide-react';
 
+import meImg from '../assets/me.jpg';
+
 const Hero = () => {
     const nameChars = "MANASWINI POLA".split("");
 
@@ -54,7 +56,7 @@ const Hero = () => {
                                             ease: "easeInOut",
                                             delay: i * 0.1
                                         }}
-                                        className={`inline-block ${char === " " ? "mr-3 md:mr-6" : ""} hover:text-[#00ff00] transition-colors duration-300 drop-shadow-[0_0_10px_rgba(0,255,0,0.2)]`}
+                                        className={`inline-block ${char === " " ? "mr-3 md:mr-6" : ""} hover:text-[#00ff00] transition-colors duration-300 drop-shadow-[0_0_10px_rgba(0,255,0,0.1)]`}
                                     >
                                         {char}
                                     </motion.span>
@@ -88,7 +90,7 @@ const Hero = () => {
                         transition={{ delay: 1.2 }}
                         className="flex flex-wrap gap-6 justify-center lg:justify-start"
                     >
-                        <a href="#projects" className="btn-primary px-10 py-4 text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(0,255,0,0.2)]">Explore Work</a>
+                        <a href="#projects" className="btn-primary px-10 py-4 text-sm font-bold tracking-widest uppercase mb-1 shadow-glow hover:shadow-glow-hover">Explore Work</a>
                         <a href="https://github.com/manaswinipola27" target="_blank" className="flex items-center gap-3 px-8 py-4 rounded-md text-white hover:bg-[#00ff00]/10 border border-white/10 transition-all font-mono text-sm">
                             <Terminal size={18} className="text-[#00ff00]" /> {`> view_code`}
                         </a>
@@ -106,7 +108,7 @@ const Hero = () => {
 
                         <div className="relative w-full h-full rounded-full p-1.5 border-2 border-[#00ff00]/20 group-hover:border-[#00ff00] transition-colors duration-500 overflow-hidden shadow-[0_0_50px_rgba(0,255,0,0.15)]">
                             <img
-                                src="me.jpg"
+                                src={meImg}
                                 alt="Manaswini Pola"
                                 className="w-full h-full object-cover rounded-full brightness-110 saturate-[1.1]"
                             />
