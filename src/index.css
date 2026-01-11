@@ -1,39 +1,56 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --primary: #00ff00;
-    --secondary: #008000;
-    --bg-dark: #050810;
-    --bg-card: #0f1424;
-    --text-main: #b8c1ec;
-    --white: #ffffff;
-  }
+@theme {
+  --color-primary: #00ff00;
+  --color-secondary: #008000;
+  --color-bg-dark: #050810;
+  --color-bg-card: #0f1424;
+  --color-text-main: #b8c1ec;
 
-  body {
-    @apply bg-[#050810] text-[#b8c1ec] selection:bg-[#00ff00] selection:text-[#050810];
-    font-family: 'Space Grotesk', sans-serif;
-    scroll-behavior: smooth;
-  }
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-glow: 0 0 10px rgba(0, 255, 0, 0.1);
+  --shadow-glow-hover: 0 0 20px rgba(0, 255, 0, 0.3);
+  --shadow-card-hover: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+}
+
+:root {
+  --primary: #00ff00;
+  --secondary: #008000;
+  --bg-dark: #050810;
+  --bg-card: #0f1424;
+  --text-main: #b8c1ec;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--bg-dark);
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
-
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-2 border border-[#00ff00] text-[#00ff00] rounded-md hover:bg-[#00ff00]/10 transition-all duration-300 backdrop-blur-sm shadow-[0_0_10px_rgba(0, 255, 0, 0.1)] hover:shadow-[0_0_20px_rgba(0, 255, 0, 0.3)] hover:-translate-y-0.5;
+    @apply px-6 py-2 border border-[--primary] text-[--primary] rounded-md hover:bg-[#00ff00]/10 transition-all duration-300 backdrop-blur-sm shadow-glow hover:shadow-glow-hover hover:-translate-y-0.5;
   }
-}
 
-.glass-card {
-  @apply bg-[#0f1424]/60 backdrop-blur-md border border-white/5 rounded-xl transition-all duration-500;
-}
+  .glass-card {
+    @apply bg-[#0f1424]/60 backdrop-blur-md border border-white/5 rounded-xl transition-all duration-500;
+  }
 
-.glass-card:hover {
-  @apply border-[#00ff00]/30 shadow-[0_20px_40px_-20px_rgba(0, 0, 0, 0.5)];
+  .glass-card:hover {
+    @apply border-[#00ff00]/30 shadow-card-hover;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -41,9 +58,10 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-[#050810];
+  background-color: var(--bg-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[#00ff00] rounded-full;
+  background-color: var(--primary);
+  border-radius: 9999px;
 }
