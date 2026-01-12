@@ -5,7 +5,8 @@ import { Terminal } from 'lucide-react';
 import meImg from '../assets/me.jpg';
 
 const Hero = () => {
-    const nameChars = "MANASWINI POLA".split("");
+    const nameText = "HI I AM MANASWINI POLA";
+    const nameChars = nameText.split("");
 
     return (
         <section id="about" className="min-h-screen flex items-center justify-center py-20 overflow-hidden relative bg-[#050810]">
@@ -46,21 +47,38 @@ const Hero = () => {
                         <div className="relative inline-block mb-4">
                             {/* Floating Name in One Line */}
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-none whitespace-nowrap tracking-tighter">
-                                {nameChars.map((char, i) => (
-                                    <motion.span
-                                        key={i}
-                                        animate={{ y: [0, -10, 0] }}
-                                        transition={{
-                                            duration: 3,
-                                            repeat: Infinity,
-                                            ease: "easeInOut",
-                                            delay: i * 0.1
-                                        }}
-                                        className={`inline-block ${char === " " ? "mr-3 md:mr-6" : ""} hover:text-[#00ff00] transition-colors duration-300 drop-shadow-[0_0_10px_rgba(0,255,0,0.1)]`}
-                                    >
-                                        {char}
-                                    </motion.span>
-                                ))}
+                                {nameChars.map((char, i) => {
+                                    const isHighlight = ["H", "I", "M", "A", "N", "A", "S", "W", "I", "N", "I"].includes(char);
+                                    const isLavender = ["P", "O", "L", "A"].includes(char);
+
+                                    return (
+                                        <motion.span
+                                            key={i}
+                                            animate={{
+                                                y: [0, -15, 0],
+                                                textShadow: [
+                                                    "0 0 5px rgba(255,255,255,0.2)",
+                                                    i % 2 === 0
+                                                        ? "0 0 20px rgba(0,255,0,0.8), 0 0 30px rgba(0,255,0,0.6)"
+                                                        : "0 0 20px rgba(184,193,236,0.8), 0 0 30px rgba(184,193,236,0.6)",
+                                                    "0 0 5px rgba(255,255,255,0.2)"
+                                                ]
+                                            }}
+                                            transition={{
+                                                duration: 4,
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: i * 0.1
+                                            }}
+                                            className={`inline-block ${char === " " ? "mr-3 md:mr-6" : ""} transition-colors duration-500`}
+                                            style={{
+                                                color: i % 2 === 0 ? "#00ff00" : "#b8c1ec"
+                                            }}
+                                        >
+                                            {char}
+                                        </motion.span>
+                                    );
+                                })}
                             </h1>
                         </div>
 
