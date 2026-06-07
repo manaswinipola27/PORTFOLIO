@@ -1,141 +1,247 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Terminal } from 'lucide-react';
-
+import { Terminal, ArrowDownCircle } from 'lucide-react';
 import meImg from '../assets/me.jpg';
 
+const ROLES = [
+  'Full Stack Developer',
+  'React Specialist',
+  'Python Developer',
+  'AI/ML Enthusiast',
+  'Problem Solver',
+];
+
+const TypingText = ({ texts }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [charIdx, setCharIdx] = useState(0);
+
+  useEffect(() => {
+    const current = texts[currentIndex];
+    let timer;
+    if (!deleting && charIdx < current.length) {
+      timer = setTimeout(() => {
+        setDisplayed(current.slice(0, charIdx + 1));
+        setCharIdx(c => c + 1);
+      }, 65);
+    } else if (!deleting && charIdx === current.length) {
+      timer = setTimeout(() => setDeleting(true), 1800);
+    } else if (deleting && charIdx > 0) {
+      timer = setTimeout(() => {
+        setDisplayed(current.slice(0, charIdx - 1));
+        setCharIdx(c => c - 1);
+      }, 35);
+    } else if (deleting && charIdx === 0) {
+      setDeleting(false);
+      setCurrentIndex(i => (i + 1) % texts.length);
+    }
+    return () => clearTimeout(timer);
+  }, [charIdx, deleting, currentIndex, texts]);
+
+  return (
+    <span>
+      <span style={{ color: '#00ff9d' }}>{displayed}</span>
+      <span className="cursor-blink" />
+    </span>
+  );
+};
+
 const Hero = () => {
-    const nameText = "HI I AM MANASWINI POLA";
-    const nameChars = nameText.split("");
+  return (
+    <section
+      id="home"
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '120px 0 80px',
+        position: 'relative',
+        zIndex: 1,
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1100,
+          width: '100%',
+          margin: '0 auto',
+          padding: '0 32px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 64,
+          flexWrap: 'wrap',
+        }}
+      >
+        {/* Left Content */}
+        <div style={{ flex: 1, minWidth: 300 }}>
+          {/* Greeting */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <p style={{ fontFamily: 'JetBrains Mono', color: '#00ff9d', fontSize: 13, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: 20 }}>
+              $ whoami — Manaswini Pola
+            </p>
 
-    return (
-        <section id="about" className="min-h-screen flex items-center justify-center py-20 overflow-hidden relative bg-[#050810]">
-            {/* Subtle Background Neon Sparks */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                {[...Array(30)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{
-                            opacity: [0, 0.4, 0],
-                            scale: [0, 1, 0],
-                            x: [Math.random() * 1200 - 600, Math.random() * 1200 - 600],
-                            y: [Math.random() * 800 - 400, Math.random() * 800 - 400]
-                        }}
-                        transition={{
-                            duration: Math.random() * 8 + 5,
-                            repeat: Infinity,
-                            ease: "linear"
-                        }}
-                        className="absolute w-[1.5px] h-[1.5px] bg-[#00ff00] rounded-full blur-[1px]"
-                    />
-                ))}
-            </div>
+            {/* Name with glitch effect */}
+            <h1
+              className="glitch section-title"
+              data-text="Manaswini"
+              style={{ fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 1, marginBottom: 8 }}
+            >
+              Manaswini
+            </h1>
+            <h1
+              style={{
+                fontFamily: 'Space Grotesk',
+                fontWeight: 700,
+                fontSize: 'clamp(48px, 8vw, 88px)',
+                lineHeight: 1,
+                color: 'rgba(255,255,255,0.15)',
+                letterSpacing: '-0.03em',
+                marginBottom: 28,
+              }}
+            >
+              Pola
+            </h1>
 
-            <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 relative z-10">
-                <div className="flex-1 text-center lg:text-left">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <p className="font-mono text-[#00ff00] mb-6 tracking-[0.4em] uppercase text-xs sm:text-sm font-bold">
-                            &lt; Full Stack Developer /&gt;
-                        </p>
+            {/* Typing Role */}
+            <p style={{ fontFamily: 'JetBrains Mono', fontSize: 'clamp(16px, 2.5vw, 22px)', marginBottom: 24, minHeight: 32 }}>
+              <span style={{ color: '#3f3f46' }}>// </span>
+              <TypingText texts={ROLES} />
+            </p>
 
-                        <div className="relative inline-block mb-4">
-                            {/* Floating Name in One Line */}
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-none whitespace-nowrap tracking-tighter">
-                                {nameChars.map((char, i) => {
-                                    const isHighlight = ["H", "I", "M", "A", "N", "A", "S", "W", "I", "N", "I"].includes(char);
-                                    const isLavender = ["P", "O", "L", "A"].includes(char);
+            <p style={{ color: '#71717a', lineHeight: 1.8, maxWidth: 480, marginBottom: 40, fontSize: 15 }}>
+              Bridge the gap between vision and reality. I build{' '}
+              <span style={{ color: '#00ff9d' }}>high-performance</span>,{' '}
+              full-stack applications with React, Django &amp; AI, crafting digital ecosystems with{' '}
+              <span style={{ color: '#8b5cf6' }}>precision</span> and innovation.
+            </p>
+          </motion.div>
 
-                                    return (
-                                        <motion.span
-                                            key={i}
-                                            animate={{
-                                                y: [0, -15, 0],
-                                                textShadow: [
-                                                    "0 0 5px rgba(255,255,255,0.2)",
-                                                    i % 2 === 0
-                                                        ? "0 0 20px rgba(0,255,0,0.8), 0 0 30px rgba(0,255,0,0.6)"
-                                                        : "0 0 20px rgba(184,193,236,0.8), 0 0 30px rgba(184,193,236,0.6)",
-                                                    "0 0 5px rgba(255,255,255,0.2)"
-                                                ]
-                                            }}
-                                            transition={{
-                                                duration: 4,
-                                                repeat: Infinity,
-                                                ease: "easeInOut",
-                                                delay: i * 0.1
-                                            }}
-                                            className={`inline-block ${char === " " ? "mr-3 md:mr-6" : ""} transition-colors duration-500`}
-                                            style={{
-                                                color: i % 2 === 0 ? "#00ff00" : "#b8c1ec"
-                                            }}
-                                        >
-                                            {char}
-                                        </motion.span>
-                                    );
-                                })}
-                            </h1>
-                        </div>
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}
+          >
+            <a href="#projects" className="btn-primary">
+              <Terminal size={16} />
+              ./view_work
+            </a>
+            <a
+              href="#contact"
+              style={{
+                fontFamily: 'JetBrains Mono',
+                fontSize: 13,
+                color: '#71717a',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                transition: 'color 0.25s',
+                padding: '12px 4px',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = '#71717a';
+              }}
+            >
+              <ArrowDownCircle size={16} /> scroll_down
+            </a>
+          </motion.div>
 
-                        <motion.p
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.8, duration: 0.8 }}
-                            className="text-lg md:text-2xl font-medium text-[#00ff00]/80 mb-10 font-mono tracking-tight"
-                        >
-                            Crafting robust digital ecosystems with precision and AI innovation.
-                        </motion.p>
-                    </motion.div>
-
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
-                        className="text-base md:text-lg text-[#b8c1ec] max-w-2xl mb-12 leading-relaxed"
-                    >
-                        Bridge the gap between vision and reality. I specialize in building high-performance,
-                        full-stack applications with <span className="text-[#00ff00]">React</span> and <span className="text-[#00ff00]">Django</span>.
-                    </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.2 }}
-                        className="flex flex-wrap gap-6 justify-center lg:justify-start"
-                    >
-                        <a href="#projects" className="btn-primary px-10 py-4 text-sm font-bold tracking-widest uppercase mb-1 shadow-glow hover:shadow-glow-hover">Explore Work</a>
-                        <a href="https://github.com/manaswinipola27" target="_blank" className="flex items-center gap-3 px-8 py-4 rounded-md text-white hover:bg-[#00ff00]/10 border border-white/10 transition-all font-mono text-sm">
-                            <Terminal size={18} className="text-[#00ff00]" /> {`> view_code`}
-                        </a>
-                    </motion.div>
+          {/* Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            style={{ display: 'flex', gap: 32, marginTop: 48, flexWrap: 'wrap' }}
+          >
+            {[
+              { num: '3+', label: 'Projects Built' },
+              { num: 'B.Tech', label: 'CS Graduate' },
+              { num: 'Full', label: 'Stack Dev' },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 28, color: '#fff', lineHeight: 1 }}>
+                  {stat.num}
                 </div>
+                <div style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: '#3f3f46', letterSpacing: '0.1em', marginTop: 4 }}>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1 }}
-                    className="flex-1 relative flex justify-center items-center"
-                >
-                    <div className="relative w-72 h-72 md:w-96 md:h-96 group">
-                        <div className="absolute inset-0 rounded-full bg-[#00ff00]/5 blur-3xl" />
-
-                        <div className="relative w-full h-full rounded-full p-1.5 border-2 border-[#00ff00]/20 group-hover:border-[#00ff00] transition-colors duration-500 overflow-hidden shadow-[0_0_50px_rgba(0,255,0,0.15)]">
-                            <img
-                                src={meImg}
-                                alt="Manaswini Pola"
-                                className="w-full h-full object-cover rounded-full brightness-110 saturate-[1.1]"
-                            />
-                        </div>
-                    </div>
-                </motion.div>
+        {/* Right — Profile Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center' }}
+          className="hidden lg:flex"
+        >
+          <div style={{ position: 'relative', width: 320, height: 320 }}>
+            {/* Glowing ring */}
+            <div style={{
+              position: 'absolute',
+              inset: -4,
+              borderRadius: '50%',
+              background: 'conic-gradient(from 0deg, #00ff9d, #8b5cf6, #00ff9d)',
+              animation: 'spin 6s linear infinite',
+              opacity: 0.6,
+            }} />
+            <style>{`@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`}</style>
+            <div style={{
+              position: 'absolute',
+              inset: 2,
+              borderRadius: '50%',
+              background: '#030303',
+            }} />
+            <img
+              src={meImg}
+              alt="Manaswini Pola"
+              style={{
+                position: 'absolute',
+                inset: 6,
+                width: 'calc(100% - 12px)',
+                height: 'calc(100% - 12px)',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                objectPosition: 'top center',
+                filter: 'brightness(1.05) saturate(1.1)',
+              }}
+            />
+            {/* Status badge */}
+            <div style={{
+              position: 'absolute',
+              bottom: 16,
+              right: 8,
+              background: 'rgba(10,10,10,0.9)',
+              border: '1px solid rgba(0,255,157,0.3)',
+              borderRadius: 30,
+              padding: '6px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              backdropFilter: 'blur(12px)',
+            }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#00ff9d', boxShadow: '0 0 8px #00ff9d', animation: 'blink 2s infinite' }} />
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: '#00ff9d' }}>open_to_work</span>
             </div>
-        </section>
-    );
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
 };
 
 export default Hero;
