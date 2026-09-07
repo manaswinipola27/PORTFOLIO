@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
 @theme {
   --color-primary: #00ff9d;
@@ -139,6 +139,15 @@ body {
   border-color: rgba(0,255,157,0.25);
   box-shadow: 0 20px 60px -20px rgba(0,0,0,0.8), 0 0 30px rgba(0,255,157,0.05);
   transform: translateY(-4px);
+}
+
+/* ─── Skill Card Hover ─────────────────────────────── */
+.skill-card:hover {
+  border-color: rgba(0,255,157,0.2) !important;
+}
+.skill-card:hover > div:first-child {
+  background: rgba(0,255,157,0.1) !important;
+  border-color: rgba(0,255,157,0.35) !important;
 }
 
 /* ─── Window Controls (macOS style) ───────────────── */

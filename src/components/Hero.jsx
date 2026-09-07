@@ -4,11 +4,11 @@ import { Terminal, ArrowDownCircle } from 'lucide-react';
 import meImg from '../assets/me.jpg';
 
 const ROLES = [
-  'Full Stack Developer',
-  'React Specialist',
-  'Python Developer',
-  'AI/ML Enthusiast',
-  'Problem Solver',
+  'AI/ML Security Engineer',
+  'SecOps & SIEM Specialist',
+  'Threat Intelligence Analyst',
+  'SOAR Automation Architect',
+  'Generative AI Engineer',
 ];
 
 const TypingText = ({ texts }) => {
@@ -115,10 +115,11 @@ const Hero = () => {
             </p>
 
             <p style={{ color: '#71717a', lineHeight: 1.8, maxWidth: 480, marginBottom: 40, fontSize: 15 }}>
-              Bridge the gap between vision and reality. I build{' '}
-              <span style={{ color: '#00ff9d' }}>high-performance</span>,{' '}
-              full-stack applications with React, Django &amp; AI, crafting digital ecosystems with{' '}
-              <span style={{ color: '#8b5cf6' }}>precision</span> and innovation.
+              Architecting{' '}
+              <span style={{ color: '#00ff9d' }}>autonomous defense systems</span>{' '}
+              at the intersection of Generative AI and enterprise cybersecurity — designing SIEM-integrated SOC workflows, AI-driven threat intelligence pipelines, and{' '}
+              <span style={{ color: '#8b5cf6' }}>SOAR-powered incident response</span>{' '}
+              frameworks that neutralize attacks before they escalate.
             </p>
           </motion.div>
 
@@ -165,9 +166,9 @@ const Hero = () => {
             style={{ display: 'flex', gap: 32, marginTop: 48, flexWrap: 'wrap' }}
           >
             {[
-              { num: '3+', label: 'Projects Built' },
-              { num: 'B.Tech', label: 'CS Graduate' },
-              { num: 'Full', label: 'Stack Dev' },
+              { num: '5+', label: 'AI/Sec Projects' },
+              { num: 'SOC', label: 'SecOps Focus' },
+              { num: 'SOAR', label: 'Automation' },
             ].map((stat) => (
               <div key={stat.label}>
                 <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 28, color: '#fff', lineHeight: 1 }}>
